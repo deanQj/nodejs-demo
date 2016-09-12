@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title><%= title %></title>
+	<link rel='stylesheet' href='/bootstrap-3.3.5/css/bootstrap.min.css' />
+	<link rel='stylesheet' href='/bootstrap-3.3.5/css/bootstrap-theme.min.css' />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/css/bootstrap-select.min.css">
+	<link rel='stylesheet' href='/bootstrap-3.3.5/css/bootstrap-table.min.css' />
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body screen_capture_injected="true">
+  	<div class="container">
+
+  		<nav class="navbar navbar-default" role="navigation">
+
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">Express</a>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li <% if (baseUrl=="") { %> class="active" <% } %>><a href="/">首页</a></li>
+						<li <% if (baseUrl=="/users") { %> class="active" <% } %>><a href="/users">用户</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<% if (!loginUser) { %> 
+						<li>
+							<button type="button" class="btn btn-default navbar-btn" onclick='window.location.href="/login"'>Sign in</button>
+						</li>
+						<% } else { %>
+						<li><p class="navbar-text">欢迎您,<%= loginUser.username %> </p></li>
+						<li><a href="/login/logout">退出</a></li>
+						<% } %>
+					</ul>
+				</div>
+			</div>
+
+		</nav>
+
+		<%- message %>

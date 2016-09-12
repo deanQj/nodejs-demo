@@ -1,0 +1,116 @@
+<% include header.html %>
+
+<div id="bs-toolbar">
+	<form action="" id="bs-form" class="form-inline" role="form" method="get">
+		<div class="form-group">
+	        <label for="bs-operate-sel">批量操作:</label>
+	        <select id="bs-operate-sel" class="selectpicker" style="width:100px;">
+	            <option value="">请选择</option>
+	            <option value="1">删除</option>
+	            <option value="2">取消置顶</option>
+	            <option value="3">行情案例</option>
+	            <option value="4">取消行情案例</option>
+	        </select>
+	        <button id="bs-operate-btn" type="button" class="btn btn-default" url="/users/delete" disabled>执行</button>
+	    </div>
+
+		<div class="form-group">
+			<label for="username" class="">用户名称：</label>
+			<input type="search" class="form-control" id="username" name="username" value="" placeholder="请输入用户名">
+		</div>
+
+		<div class="form-group">
+			<label for="level" class="">用户等级：</label>
+			<select name="level" id="level" class="selectpicker" style="width:100px;">
+				<% for (var key in levelArr) { %>
+				<option value="<%= key %>"><%= levelArr[key] %></option>
+				<% } %>
+			</select>
+		</div>
+		<button type="submit" class="btn btn-primary">查询</button>
+	</form>
+</div>
+
+<div style="margin:20px auto;">
+	<a class="btn btn-info" role="button" href="/users/add">添加</a>
+</div>
+
+<table id="bs-table"></table>
+
+<% include footer.html %>
+
+
+<script>
+$(function(){
+
+	// 用户等级的数据集
+	var levelArr = <%- JSON.stringify(levelArr) %>;
+
+	$.bootstrapTable({
+        url : '/users',
+        pageSize : 15,
+        sortName : 'create_date',
+        sortOrder : 'desc',
+        // delField : '_id',
+        columns: [
+	        {
+	            field: 'cb',
+	            checkbox: true,
+	            align: 'center',
+	            valign: 'middle'
+	        },
+	        {
+	            field: 'username',
+	            title: '用户名称',
+	            sortable: true
+	        },
+	        {
+	            field: 'phone',
+	            title: '手机',
+	            sortable: true
+	        },
+	        {
+	            field: 'email',
+	            title: '邮箱',
+	            sortable: true
+	        },
+	        {
+	            field: 'level',
+	            title: '用户等级',
+	            sortable: true,
+	            formatter: function (value, row, index) {
+	            	return levelArr[value];
+	            }
+	        },
+	        {
+	        	field: 'operate',
+	            title: '操作',
+	            align: 'center',
+	            formatter: function (value, row, index) {
+	                return [
+	                    '<a class="operate-edit" href="/users/edit/'+row._id+'">编辑</a> ',
+	                    '<a class="operate-delete" href="javascript:;">删除</a>'
+	                ].join('');
+	            },
+	            events: {
+	                'click .operate-delete': function (e, value, row, index) {
+	                	if (confirm("确定要删除数据吗？")) {
+	                		$.post("/users/delete",{ids:JSON.stringify([row._id])},function() {
+								$('#bs-table').bootstrapTable('remove', {
+			                        field: '_id',
+			                        values: [row._id]
+			                    });
+
+		                        $('#bs-table').bootstrapTable('refresh');
+	                		});
+	                	}
+
+	                }
+	            }
+	        }
+        ]
+    });
+
+
+});
+</script>

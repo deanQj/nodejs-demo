@@ -1,0 +1,78 @@
+<% include header.html %> 
+
+<form class="form-horizontal" role="form" method="post">
+	<fieldset>
+		<legend>
+			<%= title %>
+			<a href="/users" class="pull-right btn btn-info btn-xs">后退</a>
+		</legend>
+
+		<div class="form-group">
+			<label for="username" class="col-sm-2 control-label">用户名</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="username" name="username" value="<%= user.username %>" placeholder="请输入用户名">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="password" class="col-sm-2 control-label">新的密码</label>
+			<div class="col-sm-4">
+				<input type="password" class="form-control" id="password" name="password" value="" placeholder="请输入密码">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="password2" class="col-sm-2 control-label">确认密码</label>
+			<div class="col-sm-4">
+				<input type="password" class="form-control" id="password2" value="" placeholder="请输入确认密码">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="phone" class="col-sm-2 control-label">手机</label>
+			<div class="col-sm-4">
+				<input type="tel" class="form-control" id="phone" name="phone" value="<%= user.phone %>" placeholder="请输入手机">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="email" class="col-sm-2 control-label">邮箱</label>
+			<div class="col-sm-4">
+				<input type="email" class="form-control" id="email" name="email" value="<%= user.email %>" placeholder="请输入邮箱">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="age" class="col-sm-2 control-label">年龄</label>
+			<div class="col-sm-4">
+				<input type="number" class="form-control" id="age" name="age" value="<%= user.age %>" placeholder="请输入年龄">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="level" class="col-sm-2 control-label">等级</label>
+			<div class="col-sm-4">
+				<select name="level" id="level" class="selectpicker">
+					<% for (var key in levelArr) { %>
+					<option value="<%= key %>" <%= (key==user.level)?"selected":"" %>><%= levelArr[key] %></option>
+					<% } %>
+				</select>
+			</div>
+		</div>
+
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-1">
+				<input type="hidden" name="id" value="<%= user.id %>">
+				<button type="submit" class="btn btn-primary">保存</button>
+			</div>
+			<div class="col-sm-9">
+				<button type="reset" class="btn btn-default" >重置</button>
+			</div>
+		</div>
+
+
+  </fieldset>
+</form>
+
+<% include footer.html %>
