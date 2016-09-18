@@ -2,10 +2,11 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+// var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var log4js = require('log4js');
 
 //引入ejs。重新安装依赖
 var ejs = require('ejs'); 
@@ -29,7 +30,23 @@ app.set('view engine', 'html'); //app.set('view engine', 'ejs');
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 // 定义日志和输出级别
-app.use(logger('dev'));
+log4js.configure({
+  appenders: [
+    { type: 'console' }, //控制台输出
+    {
+      type: 'file', //文件输出
+      filename: 'logs/access.log', 
+      maxLogSize: 1024,
+      backups:4,
+      category: 'normal' 
+    }
+  ],
+  replaceConsole: true
+});
+var logger = log4js.getLogger('normal');
+logger.setLevel('INFO');
+app.use(log4js.connectLogger(logger, {level:log4js.levels.INFO, format:':method :url'}));
+// app.use(logger('dev'));
 
 // 定义数据解析器
 app.use(bodyParser.json());
